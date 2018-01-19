@@ -1,0 +1,26 @@
+{
+	"name": "typeorm-graphql-middleware-examples-basic",
+	"version": "0.1.0",
+	"description": "",
+	"author": "",
+	"license": "ISC",
+	"main": "index.js",
+	"scripts": {
+		"start": "nodemon",
+		"build": "npm run copy-gql && tsc",
+		"production": "node ./build/server.js",
+		"copy-gql": "copyfiles src/**/*.gql ./build",
+		"build:types": "ts-node scripts/create-typings.ts"
+	},
+	"dependencies": {
+		"copyfiles": "^1.2.0",
+		"express": "^4.16.2",
+		"nodemon": "^1.14.11",
+		"reflect-metadata": "^0.1.10",
+		"sqlite3": "^3.1.13",
+		"ts-node": "^3.3.0",
+		"typeorm": "^0.1.11",
+		"typeorm-graphql-middleware": "file:../../",
+		"typescript": "^2.6.2"
+	}
+}

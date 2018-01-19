@@ -1,0 +1,78 @@
+import { GraphqlServerContext } from 'typeorm-graphql-middleware';
+import { GraphQLResolveInfo } from 'graphql';
+
+export {};
+
+declare global {
+  namespace GQL {
+
+		export type TypeResolverFn<TSource = any, TResult = any, TArgs = {}> = (
+			source: TSource,
+			args: TArgs,
+			context: GraphqlServerContext,
+			info: GraphQLResolveInfo,
+		) => TypeResolveResult<TResult> | Promise<TypeResolveResult<TResult>>;
+
+		export type TypeResolveResult<TResult> =
+			| TResult
+			| { [P in keyof TResult]: TypeResolveResult<TResult[P]> | Promise<TypeResolveResult<TResult[P]>> };
+
+		export interface Resolver {
+		{{#each types}}
+			{{this.name}}?: {
+				{{#each this.fields}}
+				// {{this.name}}?: TypeResolverFn<{{ toPascalCase ../this.name }}, {{ toPrimitive this.type }}{{#if isArray}}[]{{/if}}{{#unless this.isRequired}} | null{{/unless}}{{#if this.arguments}}, {{ toPascalCase this.name }}{{ toPascalCase ../this.name }}Args{{/if}}>;
+				{{this.name}}?: (
+					source: {{ toPascalCase ../this.name }},
+					args: {{#if this.arguments}}{{ toPascalCase this.name }}{{ toPascalCase ../this.name }}Args{{else}}{}{{/if}},
+					context: GraphqlServerContext,
+					info: GraphQLResolveInfo,
+				) => TypeResolveResult<{{ toPrimitive this.type }}{{#if isArray}}[]{{/if}}{{#unless this.isRequired}} | null{{/unless}}> | Promise<TypeResolveResult<{{ toPrimitive this.type }}{{#if isArray}}[]{{/if}}{{#unless this.isRequired}} | null{{/unless}}>>;
+				{{/each}}
+			};
+		{{/each}}
+		}
+
+		{{#each scalars}}
+
+		{{ toComment description }}
+		export type {{ name }} = any;
+		{{/each}}
+
+		{{#each interfaces}}
+			{{~> type }}
+		{{/each}}
+
+		{{#each types}}
+			{{~> type }}
+		{{/each}}
+
+		{{#each inputTypes}}
+			{{~> type }}
+		{{/each}}
+		{{~#each types}}
+			{{~#each fields}}
+				{{~# if hasArguments }}
+		export interface {{ toPascalCase name }}{{ toPascalCase ../name }}Args {
+		{{#each arguments}}
+			{{ name }}{{#unless isRequired}}?{{/unless}}: {{ toPrimitive type }}{{#if isArray}}[]{{/if}}{{#unless isRequired}} | null{{/unless}}; {{ toComment description }}
+		{{/each}}
+		}
+				{{/if}}
+			{{/each}}
+		{{/each}}
+		{{#each enums}}
+		{{ toComment description }}
+		export enum {{ name }} {
+			{{#each values }}{{value}} = "{{ value }}",{{#unless @last}}
+			{{/unless}}{{/each}}
+		}
+
+		{{/each}}
+		{{#each unions}}
+		{{ toComment description }}
+		export type {{ name }} = {{#each possibleTypes}}{{this}}{{#unless @last}} | {{/unless}}{{/each}};
+
+		{{/each}}
+	}
+}
