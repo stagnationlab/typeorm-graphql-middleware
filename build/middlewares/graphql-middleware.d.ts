@@ -20,8 +20,6 @@ export interface LogMessage {
     data?: object;
 }
 export interface GraphqlServerOptions {
-    resolversGlobPattern: string[];
-    typeDefsGlobPattern: string[];
     simulatedLatency?: number;
     debug?: boolean;
     endpointUrl?: string;
@@ -37,7 +35,10 @@ export interface GraphqlServerOptions {
     tracing?: boolean;
     cacheControl?: boolean;
 }
-export declare type GraphqlServerContext<P> = {
+export declare type GraphqlServerContext<P = {}> = {
     loader: TypeormLoader;
 } & P;
-export default function graphqlServerMiddleware(options: GraphqlServerOptions): express.Router;
+export default function graphqlServerMiddleware(options: GraphqlServerOptions & {
+    resolversGlobPattern: string[];
+    typeDefsGlobPattern: string[];
+}): express.Router;

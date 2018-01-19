@@ -1,3 +1,5 @@
-import { GenerateTypescriptOptions } from 'graphql-schema-typescript';
-declare const _default: (schemaGlobPattern: string[], output: string, options?: GenerateTypescriptOptions) => void;
+export interface GenerateTypescriptOptions {
+    global?: boolean;
+}
+declare const _default: (typedefGlobPattern: string[], outputPath: string, options?: GenerateTypescriptOptions) => string;
 export default _default;

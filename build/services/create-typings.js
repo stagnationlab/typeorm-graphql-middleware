@@ -1,41 +1,46 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
 const path = require("path");
 const mkdirp = require("mkdirp");
-const graphql_schema_typescript_1 = require("graphql-schema-typescript");
-const get_type_definitions_1 = require("./get-type-definitions");
+const graphql_codegen_core_1 = require("graphql-codegen-core");
 const graphql_tools_1 = require("graphql-tools");
-let cachedTypeDefs = '';
-const defaultOptions = {
-    resolver: {
-        contextType: 'GraphqlServerContext',
-        importContext: 'import { GraphqlServerContext } from "typeorm-graphql-middleware"',
-    },
-    global: true,
+const graphql_codegen_compiler_1 = require("graphql-codegen-compiler");
+const get_type_definitions_1 = require("./get-type-definitions");
+let cachedContent = '';
+const tplPath = path.join(__dirname, '..', 'templates');
+const templates = {
+    schema: fs.readFileSync(path.join(tplPath, 'schema.handlebars'), 'utf8'),
+    type: fs.readFileSync(path.join(tplPath, 'type.handlebars'), 'utf8'),
 };
-exports.default = (schemaGlobPattern, output, options = {}) => {
+exports.default = (typedefGlobPattern, outputPath, options = {}) => {
     // tslint:disable-next-line:no-console
-    console.log(`Generating typings to "${output}"`);
-    const typeDefs = get_type_definitions_1.default(schemaGlobPattern);
-    const cache = typeDefs.join();
-    if (cache === cachedTypeDefs) {
-        // tslint:disable-next-line:no-console
-        console.log('Typings generated');
-        return;
-    }
-    cachedTypeDefs = cache;
+    console.log('start', options);
+    const typeDefs = get_type_definitions_1.default(typedefGlobPattern);
     const schema = graphql_tools_1.makeExecutableSchema({ typeDefs });
-    mkdirp.sync(path.dirname(output));
-    graphql_schema_typescript_1.generateTypeScriptTypes(schema, output, Object.assign({}, defaultOptions, options))
-        .then(() => {
-        // tslint:disable-next-line:no-console
-        console.log('Typings generated');
-        process.exit(0);
-    })
-        .catch(err => {
-        // tslint:disable-next-line:no-console
-        console.error(err);
-        process.exit(1);
+    const context = graphql_codegen_core_1.schemaToTemplateContext(schema);
+    const config = graphql_codegen_compiler_1.getGeneratorConfig('ts-single');
+    Object.keys(templates).forEach(key => {
+        if (typeof config.templates === 'object' && key in config.templates) {
+            config.templates[key] = templates[key];
+        }
     });
+    const compiledTs = graphql_codegen_compiler_1.compileTemplate(config, context);
+    // add Default Query, Mutation and Subscription if not present
+    // if (compiledTs[0].content.indexOf('export interface Query') === -1) {
+    // 	compiledTs[0].content += `\nexport interface Query {}\n`;
+    // }
+    // if (compiledTs[0].content.indexOf('export interface Mutation') === -1) {
+    // 	compiledTs[0].content += `\nexport interface Mutation {}\n`;
+    // }
+    // if (compiledTs[0].content.indexOf('export interface Subscription') === -1) {
+    // 	compiledTs[0].content += `\nexport interface Subscription {}\n`;
+    // }
+    if (cachedContent !== compiledTs[0].content) {
+        mkdirp.sync(path.dirname(outputPath));
+        fs.writeFileSync(outputPath, compiledTs[0].content);
+        cachedContent = compiledTs[0].content;
+    }
+    return cachedContent;
 };
 //# sourceMappingURL=create-typings.js.map

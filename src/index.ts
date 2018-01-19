@@ -1,6 +1,4 @@
 import graphqlMiddleware, { GraphqlServerOptions, GraphqlServerContext } from './middlewares/graphql-middleware';
-import createTsSchemasFromGql from './services/create-ts-schemas-from-gql';
-import createSchema from './services/create-schema';
 import { FieldResolver, SubscriptionResolver, RootResolver } from './typings';
 import resolve from './services/resolve-helper';
 import createTypings from './services/create-typings';
@@ -21,16 +19,6 @@ export interface TypeormGraphqlMiddlewareConfig {
 }
 
 const typeormGraphqlMiddleware = async ({ debug = {}, paths, graphql }: TypeormGraphqlMiddlewareConfig) => {
-	// // create schema file
-	// if (paths.schema) {
-	// 	createSchema(paths.typeDefs, paths.schema);
-	// }
-
-	// // generate server typings for typescript
-	// if (paths.typings) {
-	// 	createTsSchemasFromGql(paths.typeDefs, paths.typings);
-	// }
-
 	return graphqlMiddleware({
 		simulatedLatency: debug.simulatedLatency || 0,
 		resolversGlobPattern: paths.resolvers,
