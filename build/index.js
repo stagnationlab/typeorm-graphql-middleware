@@ -13,6 +13,8 @@ const resolve_helper_1 = require("./services/resolve-helper");
 exports.resolve = resolve_helper_1.default;
 const create_typings_1 = require("./services/create-typings");
 exports.createTypings = create_typings_1.default;
+const create_schema_1 = require("./services/create-schema");
+exports.createSchema = create_schema_1.default;
 const typeormGraphqlMiddleware = ({ debug = {}, paths, graphql }) => __awaiter(this, void 0, void 0, function* () {
     return graphql_middleware_1.default(Object.assign({ simulatedLatency: debug.simulatedLatency || 0, resolversGlobPattern: paths.resolvers, typeDefsGlobPattern: paths.typeDefs, debug: debug.logging }, graphql));
 });

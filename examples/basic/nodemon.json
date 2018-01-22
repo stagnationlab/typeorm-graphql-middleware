@@ -3,5 +3,5 @@
 	"watch": ["src/**/*.*"],
 	"ignore": ["*.test.js", "fixtures/*"],
 	"ext": "ts",
-	"exec": "npm run build:types && ts-node ./src/server.ts"
+	"exec": "run-p serve:dev build:typings build:schema"
 }

@@ -2,6 +2,7 @@ import graphqlMiddleware, { GraphqlServerOptions, GraphqlServerContext } from '.
 import { FieldResolver, SubscriptionResolver, RootResolver } from './typings';
 import resolve from './services/resolve-helper';
 import createTypings from './services/create-typings';
+import createSchema from './services/create-schema';
 import * as express from 'express';
 
 export interface TypeormGraphqlMiddlewareConfig {
@@ -9,8 +10,6 @@ export interface TypeormGraphqlMiddlewareConfig {
 	paths: {
 		resolvers: string[];
 		typeDefs: string[];
-		typings?: string;
-		schema?: string;
 	};
 	debug?: {
 		simulatedLatency?: number;
@@ -37,5 +36,6 @@ export {
 	resolve,
 	GraphqlServerOptions,
 	createTypings,
+	createSchema,
 	GraphqlServerContext,
 };

@@ -7,10 +7,12 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "nodemon",
-		"build": "npm run copy-gql && tsc",
-		"production": "node ./build/server.js",
-		"copy-gql": "copyfiles src/**/*.gql ./build",
-		"build:types": "ts-node scripts/create-typings.ts"
+		"serve:dev": "ts-node ./src/server.ts",
+		"serve:production": "node ./build/server.js",
+		"build": "run-s build:*",
+		"build:server": "copyfiles src/**/*.gql ./build && tsc",
+		"build:typings": "ts-node scripts/build-typings.ts",
+		"build:schema": "ts-node scripts/build-schema.ts"
 	},
 	"dependencies": {
 		"copyfiles": "^1.2.0",
@@ -22,5 +24,8 @@
 		"typeorm": "^0.1.11",
 		"typeorm-graphql-middleware": "file:../../",
 		"typescript": "^2.6.2"
+	},
+	"devDependencies": {
+		"npm-run-all": "^4.1.2"
 	}
 }

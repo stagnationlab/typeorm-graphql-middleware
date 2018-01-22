@@ -1,4 +1,4 @@
-import { resolve } from '../../../../../src'; // import { RootResolver } from 'typeorm-graphql-middleware'
+import { resolve } from '../../../../../src'; // import { resolve } from 'typeorm-graphql-middleware'
 import UserEntity from '../../entities/UserEntity';
 import PostEntity from '../../entities/PostEntity';
 

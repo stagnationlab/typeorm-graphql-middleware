@@ -1,6 +1,6 @@
 import PostEntity from '../../entities/PostEntity';
 import UserEntity from '../../entities/UserEntity';
-import { resolve } from '../../../../../src/index';
+import { resolve } from '../../../../../src'; // import { resolve } from 'typeorm-graphql-schema';
 
 const resolver: GQL.Resolver = {
 	Query: {

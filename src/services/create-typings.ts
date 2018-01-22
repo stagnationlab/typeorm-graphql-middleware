@@ -8,19 +8,13 @@ import getTypeDefs from './get-type-definitions';
 
 let cachedContent = '';
 
-export interface GenerateTypescriptOptions {
-	global?: boolean;
-}
-
 const tplPath = path.join(__dirname, '..', 'templates');
 const templates = {
 	schema: fs.readFileSync(path.join(tplPath, 'schema.handlebars'), 'utf8'),
 	type: fs.readFileSync(path.join(tplPath, 'type.handlebars'), 'utf8'),
 };
 
-export default (typedefGlobPattern: string[], outputPath: string, options: GenerateTypescriptOptions = {}) => {
-	// tslint:disable-next-line:no-console
-	console.log('start', options);
+export default (typedefGlobPattern: string[], outputPath: string) => {
 	const typeDefs = getTypeDefs(typedefGlobPattern);
 
 	const schema = makeExecutableSchema({ typeDefs });

@@ -25,8 +25,6 @@ const gqlOptions: TypeormGraphqlMiddlewareConfig = {
 	paths: {
 		resolvers: [path.resolve(__dirname, 'graphs', '**/*+(-resolver).+(js|ts)')],
 		typeDefs: [path.resolve(__dirname, 'graphs', '**/*.gql')],
-		typings: path.join(__dirname, 'typings', 'server', 'index.d.ts'),
-		schema: path.join(__dirname, 'typings', 'server', 'schema.gql'),
 	},
 	debug: {
 		simulatedLatency: 0,

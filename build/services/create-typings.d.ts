@@ -1,5 +1,2 @@
-export interface GenerateTypescriptOptions {
-    global?: boolean;
-}
-declare const _default: (typedefGlobPattern: string[], outputPath: string, options?: GenerateTypescriptOptions) => string;
+declare const _default: (typedefGlobPattern: string[], outputPath: string) => string;
 export default _default;

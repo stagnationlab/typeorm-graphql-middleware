@@ -13,9 +13,7 @@ const templates = {
     schema: fs.readFileSync(path.join(tplPath, 'schema.handlebars'), 'utf8'),
     type: fs.readFileSync(path.join(tplPath, 'type.handlebars'), 'utf8'),
 };
-exports.default = (typedefGlobPattern, outputPath, options = {}) => {
-    // tslint:disable-next-line:no-console
-    console.log('start', options);
+exports.default = (typedefGlobPattern, outputPath) => {
     const typeDefs = get_type_definitions_1.default(typedefGlobPattern);
     const schema = graphql_tools_1.makeExecutableSchema({ typeDefs });
     const context = graphql_codegen_core_1.schemaToTemplateContext(schema);
