@@ -7,7 +7,10 @@ import getTypeDefs from './get-type-definitions';
 let cachedContent = '';
 
 export default (typeDefsPath: string[], outputPath: string) => {
-	const typeDefs = getTypeDefs(typeDefsPath).map(def => def.replace(/ extend/g, ''));
+	let typeDefs = getTypeDefs(typeDefsPath);
+	typeDefs = typeDefs.map(def => def.replace(/\s*extend\s*/g, ''));
+
+	console.log(typeDefs);
 	const schema = mergeTypes(typeDefs);
 
 	if (cachedContent !== schema) {
