@@ -34,6 +34,7 @@ export interface GraphqlServerOptions {
     fieldResolver?: GraphQLFieldResolver<any, any>;
     tracing?: boolean;
     cacheControl?: boolean;
+    whitelist?: string[];
 }
 export declare type GraphqlServerContext<P = {}> = {
     loader: TypeormLoader;

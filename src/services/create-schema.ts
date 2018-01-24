@@ -10,7 +10,6 @@ export default (typeDefsPath: string[], outputPath: string) => {
 	let typeDefs = getTypeDefs(typeDefsPath);
 	typeDefs = typeDefs.map(def => def.replace(/\s*extend\s*/g, ''));
 
-	console.log(typeDefs);
 	const schema = mergeTypes(typeDefs);
 
 	if (cachedContent !== schema) {

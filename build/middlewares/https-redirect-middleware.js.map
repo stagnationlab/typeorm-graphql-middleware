@@ -1,1 +1,0 @@
-{"version":3,"file":"https-redirect-middleware.js","sourceRoot":"","sources":["../../src/middlewares/https-redirect-middleware.ts"],"names":[],"mappings":";;AAEA;IACC,MAAM,CAAC,CAAC,OAAgB,EAAE,QAAkB,EAAE,EAAE;QAC/C,QAAQ,CAAC,QAAQ,CAAC,WAAW,OAAO,CAAC,QAAQ,GAAG,OAAO,CAAC,WAAW,EAAE,CAAC,CAAC;IACxE,CAAC,CAAC;AACH,CAAC;AAJD,0CAIC"}

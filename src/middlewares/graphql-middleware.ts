@@ -1,11 +1,13 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 import { makeExecutableSchema } from 'graphql-tools';
 import { ValidationContext, GraphQLFieldResolver } from 'graphql';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import getTypeDefs from '../services/get-type-definitions';
 import getResolvers from '../services/get-resolvers';
 import createTypeormLoader, { TypeormLoader } from '../services/typeorm-loader';
+import { CorsOptions } from 'cors';
 
 export declare enum LogAction {
 	request = 0,
@@ -27,8 +29,6 @@ export interface LogMessage {
 }
 
 export interface GraphqlServerOptions {
-	// resolversGlobPattern: string[];
-	// typeDefsGlobPattern: string[];
 	simulatedLatency?: number;
 	debug?: boolean;
 	endpointUrl?: string;
@@ -43,6 +43,7 @@ export interface GraphqlServerOptions {
 	fieldResolver?: GraphQLFieldResolver<any, any>;
 	tracing?: boolean;
 	cacheControl?: boolean;
+	whitelist?: string[];
 }
 
 export type GraphqlServerContext<P = {}> = {
@@ -64,8 +65,19 @@ export default function graphqlServerMiddleware(
 		endpointUrl,
 		graphiqlUrl,
 		enableGraphiql,
+		whitelist,
 		...rest
 	} = options;
+
+	const corsOptions: CorsOptions = {
+		origin: (origin, callback) => {
+			if (origin === undefined || (whitelist && whitelist.indexOf(origin) !== -1)) {
+				callback(null, true);
+			} else {
+				callback(null, false);
+			}
+		},
+	};
 
 	const schema = makeExecutableSchema({
 		resolvers: getResolvers(resolversGlobPattern),
@@ -83,6 +95,7 @@ export default function graphqlServerMiddleware(
 
 	router.use(
 		endpointUrl || '/graphql',
+		whitelist ? cors(corsOptions) : (_, __, next) => next(),
 		bodyParser.json(),
 		graphqlExpress({
 			...rest,
@@ -99,6 +112,7 @@ export default function graphqlServerMiddleware(
 	if (enableGraphiql) {
 		router.use(
 			graphiqlUrl || '/graphiql',
+			whitelist ? cors(corsOptions) : (_, __, next) => next(),
 			bodyParser.json(),
 			graphiqlExpress({
 				endpointURL: endpointUrl || '/graphql',

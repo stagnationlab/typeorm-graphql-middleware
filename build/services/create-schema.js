@@ -9,7 +9,6 @@ let cachedContent = '';
 exports.default = (typeDefsPath, outputPath) => {
     let typeDefs = get_type_definitions_1.default(typeDefsPath);
     typeDefs = typeDefs.map(def => def.replace(/\s*extend\s*/g, ''));
-    console.log(typeDefs);
     const schema = merge_graphql_schemas_1.mergeTypes(typeDefs);
     if (cachedContent !== schema) {
         mkdirp.sync(path.dirname(outputPath));

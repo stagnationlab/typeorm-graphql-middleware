@@ -21,6 +21,7 @@ const gqlOptions: TypeormGraphqlMiddlewareConfig = {
 		endpointUrl: '/graphql',
 		graphiqlUrl: '/graphiql',
 		enableGraphiql: true,
+		whitelist: ['http://localhost:3001'],
 	},
 	paths: {
 		resolvers: [path.resolve(__dirname, 'graphs', '**/*+(-resolver).+(js|ts)')],
