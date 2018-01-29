@@ -5,6 +5,7 @@ import resolve from './services/resolve-helper';
 import createTypings from './services/create-typings';
 import createSchema from './services/create-schema';
 import * as express from 'express';
+import createTypeormLoader, { TypeormLoader } from './services/typeorm-loader';
 export interface TypeormGraphqlMiddlewareConfig {
     graphql: GraphqlServerOptions;
     paths: {
@@ -18,4 +19,4 @@ export interface TypeormGraphqlMiddlewareConfig {
 }
 declare const typeormGraphqlMiddleware: ({debug, paths, graphql}: TypeormGraphqlMiddlewareConfig) => Promise<express.Router>;
 export default typeormGraphqlMiddleware;
-export { FieldResolver, SubscriptionResolver, RootResolver, resolve, GraphqlServerOptions, createTypings, createSchema, GraphqlServerContext };
+export { FieldResolver, SubscriptionResolver, RootResolver, resolve, GraphqlServerOptions, createTypings, createSchema, GraphqlServerContext, TypeormLoader, createTypeormLoader };

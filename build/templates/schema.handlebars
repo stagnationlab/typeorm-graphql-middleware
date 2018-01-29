@@ -21,13 +21,13 @@ declare global {
 		{{#each types}}
 			{{this.name}}?: {
 				{{#each this.fields}}
-				// {{this.name}}?: TypeResolverFn<{{ toPascalCase ../this.name }}, {{ toPrimitive this.type }}{{#if isArray}}[]{{/if}}{{#unless this.isRequired}} | null{{/unless}}{{#if this.arguments}}, {{ toPascalCase this.name }}{{ toPascalCase ../this.name }}Args{{/if}}>;
+				// {{this.name}}?: TypeResolverFn<{{ toPascalCase ../this.name }}, {{ toPrimitive this.type }}{{#if isArray}}[]{{/if}}{{#unless this.isRequired}} | undefined{{/unless}}{{#if this.arguments}}, {{ toPascalCase this.name }}{{ toPascalCase ../this.name }}Args{{/if}}>;
 				{{this.name}}?: (
 					source: {{ toPascalCase ../this.name }},
 					args: {{#if this.arguments}}{{ toPascalCase this.name }}{{ toPascalCase ../this.name }}Args{{else}}{}{{/if}},
 					context: GraphqlServerContext,
 					info: GraphQLResolveInfo,
-				) => TypeResolveResult<{{ toPrimitive this.type }}{{#if isArray}}[]{{/if}}{{#unless this.isRequired}} | null{{/unless}}> | Promise<TypeResolveResult<{{ toPrimitive this.type }}{{#if isArray}}[]{{/if}}{{#unless this.isRequired}} | null{{/unless}}>>;
+				) => TypeResolveResult<{{ toPrimitive this.type }}{{#if isArray}}[]{{/if}}{{#unless this.isRequired}} | undefined{{/unless}}> | Promise<TypeResolveResult<{{ toPrimitive this.type }}{{#if isArray}}[]{{/if}}{{#unless this.isRequired}} | undefined{{/unless}}>>;
 				{{/each}}
 			};
 		{{/each}}
@@ -55,7 +55,7 @@ declare global {
 				{{~# if hasArguments }}
 		export interface {{ toPascalCase name }}{{ toPascalCase ../name }}Args {
 		{{#each arguments}}
-			{{ name }}{{#unless isRequired}}?{{/unless}}: {{ toPrimitive type }}{{#if isArray}}[]{{/if}}{{#unless isRequired}} | null{{/unless}}; {{ toComment description }}
+			{{ name }}{{#unless isRequired}}?{{/unless}}: {{ toPrimitive type }}{{#if isArray}}[]{{/if}}; {{ toComment description }}
 		{{/each}}
 		}
 				{{/if}}

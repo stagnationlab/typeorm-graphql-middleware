@@ -7,7 +7,6 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import getTypeDefs from '../services/get-type-definitions';
 import getResolvers from '../services/get-resolvers';
 import createTypeormLoader, { TypeormLoader } from '../services/typeorm-loader';
-import { CorsOptions } from 'cors';
 
 export declare enum LogAction {
 	request = 0,
@@ -69,7 +68,7 @@ export default function graphqlServerMiddleware(
 		...rest
 	} = options;
 
-	const corsOptions: CorsOptions = {
+	const corsOptions: cors.CorsOptions = {
 		origin: (origin, callback) => {
 			if (origin === undefined || (whitelist && whitelist.indexOf(origin) !== -1)) {
 				callback(null, true);
