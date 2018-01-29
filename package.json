@@ -1,8 +1,9 @@
 {
 	"name": "typeorm-graphql-middleware",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "middleware and helpers for connection graphql and typeorm",
 	"main": "build/index.js",
+	"types": "build/index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:stagnationlab/typeorm-graphql-middleware.git"

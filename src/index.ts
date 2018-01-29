@@ -4,6 +4,7 @@ import resolve from './services/resolve-helper';
 import createTypings from './services/create-typings';
 import createSchema from './services/create-schema';
 import * as express from 'express';
+import createTypeormLoader, { TypeormLoader } from './services/typeorm-loader';
 
 export interface TypeormGraphqlMiddlewareConfig {
 	graphql: GraphqlServerOptions;
@@ -38,4 +39,6 @@ export {
 	createTypings,
 	createSchema,
 	GraphqlServerContext,
+	TypeormLoader,
+	createTypeormLoader,
 };
