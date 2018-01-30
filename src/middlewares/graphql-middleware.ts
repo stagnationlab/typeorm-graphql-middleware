@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import { makeExecutableSchema } from 'graphql-tools';
-import { ValidationContext, GraphQLFieldResolver } from 'graphql';
+import { ValidationContext, GraphQLFieldResolver, GraphQLError } from 'graphql';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import getTypeDefs from '../services/get-type-definitions';
 import getResolvers from '../services/get-resolvers';
@@ -33,7 +33,7 @@ export interface GraphqlServerOptions {
 	endpointUrl?: string;
 	graphiqlUrl?: string;
 	enableGraphiql?: boolean;
-	formatError?: () => void;
+	formatError?: (error: GraphQLError) => void;
 	context?: any;
 	logFunction?: (message: LogMessage) => any;
 	formatParams?: (params: object) => any;

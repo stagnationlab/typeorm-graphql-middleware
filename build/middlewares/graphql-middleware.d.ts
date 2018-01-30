@@ -1,6 +1,6 @@
 /// <reference types="express" />
 import * as express from 'express';
-import { ValidationContext, GraphQLFieldResolver } from 'graphql';
+import { ValidationContext, GraphQLFieldResolver, GraphQLError } from 'graphql';
 import { TypeormLoader } from '../services/typeorm-loader';
 export declare enum LogAction {
     request = 0,
@@ -25,7 +25,7 @@ export interface GraphqlServerOptions {
     endpointUrl?: string;
     graphiqlUrl?: string;
     enableGraphiql?: boolean;
-    formatError?: () => void;
+    formatError?: (error: GraphQLError) => void;
     context?: any;
     logFunction?: (message: LogMessage) => any;
     formatParams?: (params: object) => any;
